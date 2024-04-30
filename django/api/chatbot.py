@@ -10,6 +10,6 @@ def getMessage(request):
     userText = request.POST.get('text')
 
     llmClassObject = Huggingface('mistralai/Mistral-7B-Instruct-v0.2')
-    llmResult = Huggingface.getResult(llmClassObject, {"inputs": userText})
+    llmResult = Huggingface.getResultOfLlm(llmClassObject, {"inputs": userText})
     llmResult = llmResult[0]['generated_text']
     return HttpResponse(llmResult)
