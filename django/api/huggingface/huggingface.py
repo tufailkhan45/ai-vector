@@ -1,6 +1,6 @@
 import requests
 
-class huggingface:
+class Huggingface:
     def __init__(self,model):
         self.apiUrl = "https://api-inference.huggingface.co/models/" + model
         self.headers = {"Authorization": "Bearer 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"}
