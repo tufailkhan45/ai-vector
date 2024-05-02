@@ -19,3 +19,5 @@ typing_extensions==4.11.0
 cryptography==3.4.8
 pymilvus==2.3.7
 python-dotenv==0.10.1
+InstructorEmbedding==1.0.1
+sentence-transformers==2.1.2
