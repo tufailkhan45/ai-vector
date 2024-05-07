@@ -31,6 +31,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+MILVUS_URI = 'http://localhost:19530'
 
 # Application definition
 

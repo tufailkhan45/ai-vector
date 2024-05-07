@@ -2,11 +2,15 @@ import json
 from pymilvus import MilvusClient, DataType, utility, connections, Collection
 from InstructorEmbedding import INSTRUCTOR
 import pandas as pd
+from django.conf import settings
 
 
 class Milvus:
-    def __init__(self, uri="http://localhost:19530"):
-        self.client = MilvusClient(uri=uri)
+    def __init__(self):
+        # settings.MILVUS_URI
+        # tcp://milvus-standalone:19530
+        # http://localhost:19530
+        self.client = MilvusClient(uri='tcp://milvus-standalone:19530')
         self.collectionName = 'chatbot_collection'
 
     def __setupCollection(self):
@@ -95,6 +99,32 @@ class Milvus:
         except Exception as e:
             print(f"An error occurred: {e}")
 
+    def generateEmbedding(self, text):
+        try:
+            embeddingModel = INSTRUCTOR('hkunlp/instructor-large')
+            embeddings = embeddingModel.encode([text])
+            return embeddings
+        except Exception as e:
+            return e
+
+    def getSimilarityMetric(self, userMetric):
+        try:
+            # return userMetric
+            res = self.client.search(
+                collection_name=self.collectionName,
+                data=userMetric,
+                limit=10,
+                search_params={"metric_type": "L2",
+                               "params": {}},
+                output_fields=["content"],
+            )
+
+            # result = json.dumps(res[0], indent=4)
+            result = json.dumps(res[0])
+            return result
+        except Exception as e:
+            return e
+
     def runMilvusSetup(self):
         try:
             self.__setupCollection()
@@ -104,5 +134,7 @@ class Milvus:
             print(f"An error occurred: {e}")
 
 
-obj = Milvus()
-obj.runMilvusSetup()
+# obj = Milvus()
+# # obj.runMilvusSetup()
+# embedding = obj.generateEmbedding("What is savyour")
+# print(obj.getSimilarityMetric(embedding))
