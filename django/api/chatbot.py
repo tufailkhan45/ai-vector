@@ -7,6 +7,7 @@ from api.huggingface.huggingface import Huggingface
 
 @require_POST
 @csrf_exempt
+# meta-llama/Meta-Llama-3-8B"
 def getMessage(request):
     try:
         userText = request.POST.get('text')
